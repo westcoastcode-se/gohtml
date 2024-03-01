@@ -1,4 +1,4 @@
-A low-latency render the HTML components made for pure Golang Components
+A low-latency HTML components renderer using Go functions
 
 This is, somewhat, under development. Mostly for my amusement at the moment
 
