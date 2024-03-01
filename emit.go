@@ -48,3 +48,13 @@ func EmitChannelEx(f func() chan Node, props ChannelProps) Node {
 		return b
 	}
 }
+
+// EmitArray emits an array of items and converts them into nodes to be written
+func EmitArray[T any](arr []T, emit func(t T) Node) Node {
+	return func(b byte, w io.Writer) byte {
+		for _, item := range arr {
+			b = emit(item)(b, w)
+		}
+		return b
+	}
+}

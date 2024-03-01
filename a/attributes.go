@@ -54,3 +54,7 @@ func Content(val string) gohtml.Node {
 func Scope(val string) gohtml.Node {
 	return gohtml.Attribute("scope", val)
 }
+
+func Style(val string) gohtml.Node {
+	return gohtml.Attribute("style", val)
+}

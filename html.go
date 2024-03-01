@@ -167,6 +167,31 @@ func TBody(c ...Node) Node {
 	return Elem("tbody", c...)
 }
 
+func Header(c ...Node) Node {
+	return Elem("header", c...)
+}
+
+func Main(c ...Node) Node {
+	return Elem("main", c...)
+}
+
+func Button(c ...Node) Node {
+	return Elem("button", c...)
+}
+
+func Ul(c ...Node) Node {
+	return Elem("ul", c...)
+}
+
+func Li(c ...Node) Node {
+	return Elem("li", c...)
+}
+
+func A(c ...Node) Node {
+	return Elem("a", c...)
+}
+
+// Text creates a simple text string
 func Text(text string) Node {
 	return func(b byte, w io.Writer) byte {
 		if b != 0 {
@@ -177,6 +202,7 @@ func Text(text string) Node {
 	}
 }
 
+// Textf creates a formatted text string
 func Textf(format string, a ...any) Node {
 	return func(b byte, w io.Writer) byte {
 		if b != 0 {
@@ -204,12 +230,6 @@ func Logf(format string, a ...interface{}) Node {
 	}
 }
 
-// EmitArray emits an array of items and converts them into nodes to be written
-func EmitArray[T any](arr []T, emit func(t T) Node) Node {
-	return func(b byte, w io.Writer) byte {
-		for _, item := range arr {
-			b = emit(item)(b, w)
-		}
-		return b
-	}
+func Span(c ...Node) Node {
+	return Elem("span", c...)
 }
