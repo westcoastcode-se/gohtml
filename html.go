@@ -242,6 +242,20 @@ func A(c ...Node) Node {
 	return Elem("a", c...)
 }
 
+func P(c ...Node) Node {
+	return Elem("p", c...)
+}
+
+func Bytes(value []byte) Node {
+	return func(b byte, w io.Writer) byte {
+		if b != 0 {
+			_, _ = w.Write([]byte{b})
+		}
+		_, _ = w.Write(value)
+		return 0
+	}
+}
+
 // Text creates a simple text string
 func Text(text string) Node {
 	return func(b byte, w io.Writer) byte {

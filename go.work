@@ -6,4 +6,5 @@ use (
 	examples/arrays
 	examples/channels
 	examples/caching
+	examples/cdn
 )
