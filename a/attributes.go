@@ -1,5 +1,6 @@
 package a
 
+import "io"
 import "github.com/westcoastcode-se/gohtml"
 
 func ID(id string) gohtml.Node {
@@ -8,6 +9,15 @@ func ID(id string) gohtml.Node {
 
 func Class(classes string) gohtml.Node {
 	return gohtml.Attribute("class", classes)
+}
+
+func ClassIf(classes string, optional bool) gohtml.Node {
+	return func(b byte, w io.Writer) byte {
+		if optional {
+			return Class(classes)(b, w)
+		}
+		return b
+	}
 }
 
 func Href(h string) gohtml.Node {
@@ -57,4 +67,8 @@ func Scope(val string) gohtml.Node {
 
 func Style(val string) gohtml.Node {
 	return gohtml.Attribute("style", val)
+}
+
+func Lang(val string) gohtml.Node {
+	return gohtml.Attribute("lang", val)
 }

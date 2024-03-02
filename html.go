@@ -57,16 +57,20 @@ func Elem(name string, c ...Node) Node {
 	}
 }
 
-func Html(lang string, c ...Node) RootNode {
+func Html(c ...Node) RootNode {
 	return func(w io.Writer) (int, error) {
 		we := &ErrorAwareWriter{
 			w: w,
 		}
-		if _, err := we.Write([]byte("<!doctype html><html lang=\"" + lang + "\">")); err != nil {
+		if _, err := we.Write([]byte("<!doctype html><html")); err != nil {
 			return 0, err
 		}
+		b := byte('>')
 		for _, cc := range c {
-			cc(0, we)
+			b = cc(b, we)
+		}
+		if b != 0 {
+			_, _ = we.Write([]byte{b})
 		}
 		_, _ = we.Write([]byte("</html>"))
 		return we.len, we.err
