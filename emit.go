@@ -5,7 +5,9 @@ import (
 	"time"
 )
 
-// EmitChannel calls a function be called in which a channel of nodes is consumed until the channel is closed
+// EmitChannel calls a function be called in which a channel of nodes is consumed until the channel is closed.
+// The reason for why it takes a function returning a channel instead of just taking the channel is so that
+// we can "not" create a channel if, for example, the result is cached
 func EmitChannel(f func() chan Node) Node {
 	return func(b byte, w io.Writer) byte {
 		ch := f()
@@ -22,7 +24,10 @@ type ChannelProps struct {
 }
 
 // EmitChannelEx is an extended version of EmitChannel in which you can configure how the framework should
-// handle the processing of the channel
+// handle the processing of the channel.
+//
+// The reason for why it takes a function returning a channel instead of just taking the channel is so that
+// we can "not" create a channel if, for example, the result is cached
 func EmitChannelEx(f func() chan Node, props ChannelProps) Node {
 	// Normal emit if no timeout is required
 	if props.Timeout == time.Duration(0) {
@@ -54,6 +59,16 @@ func EmitArray[T any](arr []T, emit func(t T) Node) Node {
 	return func(b byte, w io.Writer) byte {
 		for _, item := range arr {
 			b = emit(item)(b, w)
+		}
+		return b
+	}
+}
+
+// EmitMap emits a map of key-value pairs and converts them into nodes to be written
+func EmitMap[K comparable, V any](arr map[K]V, emit func(key K, value V) Node) Node {
+	return func(b byte, w io.Writer) byte {
+		for key, value := range arr {
+			b = emit(key, value)(b, w)
 		}
 		return b
 	}

@@ -1,74 +1,77 @@
 package a
 
-import "io"
-import "github.com/westcoastcode-se/gohtml"
+import (
+	"github.com/westcoastcode-se/gohtml"
+)
 
 func ID(id string) gohtml.Node {
-	return gohtml.Attribute("id", id)
+	return gohtml.Attrib("id", id)
 }
 
 func Class(classes string) gohtml.Node {
-	return gohtml.Attribute("class", classes)
+	return gohtml.Attrib("class", classes)
 }
 
 func ClassIf(classes string, optional bool) gohtml.Node {
-	return func(b byte, w io.Writer) byte {
-		if optional {
-			return Class(classes)(b, w)
-		}
-		return b
-	}
+	return gohtml.AttribIf(optional, func() gohtml.Node {
+		return Class(classes)
+	})
+}
+
+// ClassesIf emits a class attribute with zero or many values. Each value is expected to be emitted from a gohtml.Value functions
+func ClassesIf(values ...gohtml.Node) gohtml.Node {
+	return gohtml.Attribs("class", values...)
 }
 
 func Href(h string) gohtml.Node {
-	return gohtml.Attribute("href", h)
+	return gohtml.Attrib("href", h)
 }
 
 func Src(src string) gohtml.Node {
-	return gohtml.Attribute("src", src)
+	return gohtml.Attrib("src", src)
 }
 
 func Role(classes string) gohtml.Node {
-	return gohtml.Attribute("role", classes)
+	return gohtml.Attrib("role", classes)
 }
 
 func Integrity(val string) gohtml.Node {
-	return gohtml.Attribute("integrity", val)
+	return gohtml.Attrib("integrity", val)
 }
 
 const RelStylesheet = "stylesheet"
 const RelIcon = "icon"
 
 func Rel(rel string) gohtml.Node {
-	return gohtml.Attribute("rel", rel)
+	return gohtml.Attrib("rel", rel)
 }
 
 const CrossOriginAnonymous = "anonymous"
 
 func CrossOrigin(val string) gohtml.Node {
-	return gohtml.Attribute("crossorigin", val)
+	return gohtml.Attrib("crossorigin", val)
 }
 
 func Charset(val string) gohtml.Node {
-	return gohtml.Attribute("charset", val)
+	return gohtml.Attrib("charset", val)
 }
 
 func Name(val string) gohtml.Node {
-	return gohtml.Attribute("name", val)
+	return gohtml.Attrib("name", val)
 }
 
 func Content(val string) gohtml.Node {
-	return gohtml.Attribute("content", val)
+	return gohtml.Attrib("content", val)
 }
 
 func Scope(val string) gohtml.Node {
-	return gohtml.Attribute("scope", val)
+	return gohtml.Attrib("scope", val)
 }
 
 func Style(val string) gohtml.Node {
-	return gohtml.Attribute("style", val)
+	return gohtml.Attrib("style", val)
 }
 
 func Lang(val string) gohtml.Node {
-	return gohtml.Attribute("lang", val)
+	return gohtml.Attrib("lang", val)
 }

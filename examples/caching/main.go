@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
 	. "github.com/westcoastcode-se/gohtml"
 	"github.com/westcoastcode-se/gohtml/a"
+	"log"
+	"net/http"
 	"time"
 )
 
@@ -12,7 +12,11 @@ func SlowIO(count int) chan Node {
 	ch := make(chan Node)
 	go func() {
 		for i := 0; i < count; i++ {
-			ch <- Div(Text(fmt.Sprintf("value: %d", i)))
+			ch <- Tr(
+				Td(
+					Textf("value: %d", i),
+				),
+			)
 			time.Sleep(100 * time.Millisecond)
 		}
 		close(ch)
@@ -31,11 +35,9 @@ func SuperSlowNode() Node {
 // you want to cache html based on the actual logged-in user
 var cacheStorage = CreateInMemoryCacheStorage()
 
-func PrintHtml() {
-	b := bytes.Buffer{}
-
+func index(w http.ResponseWriter, r *http.Request) {
 	// generate the actual html
-	numBytes, err := Html("sv",
+	_, _ = Html(a.Lang("en"),
 		Head(
 			// Add a meta header tag with the attribute charset="UTF-8"
 			Meta(a.Charset("UTF-8")),
@@ -53,17 +55,13 @@ func PrintHtml() {
 				),
 			),
 		),
-	)(&b)
-
-	// write the result in the console
-	fmt.Println("written", numBytes, "bytes with error", err)
-	fmt.Println(b.String())
+	)(w)
 }
 
 func main() {
-	// Call the print function
-	PrintHtml()
-
-	// The second call is much faster because of the caching mechanism
-	PrintHtml()
+	http.HandleFunc("/", index)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

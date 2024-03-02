@@ -1,19 +1,24 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
 	. "github.com/westcoastcode-se/gohtml"
 	"github.com/westcoastcode-se/gohtml/a"
+	"log"
+	"net/http"
 	"time"
 )
 
 func SimulateSlowIO() chan Node {
 	// Create a channel that's responsible for emitting Nodes. We are simulating slow IO by using Sleep
+	// Consider looking into the Caching example on how to handle slow IO.
 	ch := make(chan Node)
 	go func() {
 		for i := 0; i < 10; i++ {
-			ch <- Div(Text(fmt.Sprintf("value: %d", i)))
+			ch <- Tr(
+				Td(
+					Textf("value: %d", i),
+				),
+			)
 			time.Sleep(100 * time.Millisecond)
 		}
 		close(ch)
@@ -21,11 +26,15 @@ func SimulateSlowIO() chan Node {
 	return ch
 }
 
-func main() {
-	b := bytes.Buffer{}
+func SimulateSlowIO2() func() chan Node {
+	return func() chan Node {
+		return SimulateSlowIO()
+	}
+}
 
+func index(w http.ResponseWriter, r *http.Request) {
 	// generate the actual html
-	numBytes, err := Html("sv",
+	_, _ = Html(a.Lang("en"),
 		Head(
 			// Add a meta header tag with the attribute charset="UTF-8"
 			Meta(a.Charset("UTF-8")),
@@ -36,12 +45,16 @@ func main() {
 				Text("Table using emit"),
 			),
 			Table(
-				EmitChannel(SimulateSlowIO()),
+				EmitChannel(SimulateSlowIO2()),
 			),
 		),
-	)(&b)
+	)(w)
+}
 
-	// write the result in the console
-	fmt.Println("written", numBytes, "bytes with error", err)
-	fmt.Println(b.String())
+func main() {
+	http.HandleFunc("/", index)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

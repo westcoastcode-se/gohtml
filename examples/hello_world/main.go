@@ -11,7 +11,7 @@ func main() {
 	b := bytes.Buffer{}
 
 	// generate the actual html
-	numBytes, err := Html("sv",
+	numBytes, err := Html(a.Lang("en"),
 		Head(
 			// Add a meta header tag with the attribute charset="UTF-8"
 			Meta(a.Charset("UTF-8")),

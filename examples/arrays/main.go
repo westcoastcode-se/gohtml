@@ -1,10 +1,10 @@
 package main
 
 import (
-	"bytes"
-	"fmt"
 	. "github.com/westcoastcode-se/gohtml"
 	"github.com/westcoastcode-se/gohtml/a"
+	"log"
+	"net/http"
 )
 
 func Emit5Rows() Node {
@@ -36,11 +36,9 @@ func ArrayOf5Rows() Node {
 	return ExpandArray(nodes)
 }
 
-func main() {
-	b := bytes.Buffer{}
-
+func index(w http.ResponseWriter, r *http.Request) {
 	// generate the actual html
-	numBytes, err := Html("sv",
+	_, _ = Html(a.Lang("en"),
 		Head(
 			// Add a meta header tag with the attribute charset="UTF-8"
 			Meta(a.Charset("UTF-8")),
@@ -60,9 +58,13 @@ func main() {
 				ArrayOf5Rows(),
 			),
 		),
-	)(&b)
+	)(w)
+}
 
-	// write the result in the console
-	fmt.Println("written", numBytes, "bytes with error", err)
-	fmt.Println(b.String())
+func main() {
+	http.HandleFunc("/", index)
+	err := http.ListenAndServe(":8080", nil)
+	if err != nil {
+		log.Fatal(err)
+	}
 }

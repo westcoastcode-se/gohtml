@@ -9,7 +9,54 @@ import (
 type RootNode func(w io.Writer) (int, error)
 type Node func(b byte, w io.Writer) byte
 
-func Attribute(key string, value string) Node {
+// NodeIf gives you a way of creating a Node only if the supplied test is true
+func NodeIf(test bool, f func() Node) Node {
+	return func(b byte, w io.Writer) byte {
+		if !test {
+			return b
+		}
+		return f()(b, w)
+	}
+}
+
+// AttribIf gives you a way of creating a Node only if the supplied test is true. This function
+// is identical  as NodeIf
+func AttribIf(test bool, f func() Node) Node {
+	return NodeIf(test, f)
+}
+
+// Attribs gives you a way of creating an attribute with multiple values using the Value, ValueIf functions
+func Attribs(key string, values ...Node) Node {
+	return func(b byte, w io.Writer) byte {
+		_, _ = w.Write([]byte{' '})
+		_, _ = w.Write([]byte(key))
+		_, _ = w.Write([]byte("=\""))
+		for _, a := range values {
+			_, _ = w.Write([]byte{' '})
+			b = a(b, w)
+		}
+		_, _ = w.Write([]byte{'"'})
+		return b
+	}
+}
+
+func Value(value string) Node {
+	return func(b byte, w io.Writer) byte {
+		_, _ = w.Write([]byte(value))
+		return b
+	}
+}
+
+func ValueIf(value string, test bool) Node {
+	return func(b byte, w io.Writer) byte {
+		if test {
+			_, _ = w.Write([]byte(value))
+		}
+		return b
+	}
+}
+
+func Attrib(key string, value string) Node {
 	return func(b byte, w io.Writer) byte {
 		_, _ = w.Write([]byte{' '})
 		_, _ = w.Write([]byte(key))
@@ -213,6 +260,34 @@ func Textf(format string, a ...any) Node {
 			_, _ = w.Write([]byte{b})
 		}
 
+		_, _ = w.Write([]byte(fmt.Sprintf(format, a...)))
+		return 0
+	}
+}
+
+// TextIf creates a simple text string if the test is true
+func TextIf(text string, test bool) Node {
+	return func(b byte, w io.Writer) byte {
+		if !test {
+			return b
+		}
+		if b != 0 {
+			_, _ = w.Write([]byte{b})
+		}
+		_, _ = w.Write([]byte(text))
+		return 0
+	}
+}
+
+// TextfIf creates a formatted text string if the supplied test is true
+func TextfIf(format string, test bool, a ...any) Node {
+	return func(b byte, w io.Writer) byte {
+		if !test {
+			return b
+		}
+		if b != 0 {
+			_, _ = w.Write([]byte{b})
+		}
 		_, _ = w.Write([]byte(fmt.Sprintf(format, a...)))
 		return 0
 	}
