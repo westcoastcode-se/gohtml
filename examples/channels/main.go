@@ -8,12 +8,11 @@ import (
 	"time"
 )
 
-func SimulateSlowIO() chan Node {
-	// Create a channel that's responsible for emitting Nodes. We are simulating slow IO by using Sleep
-	// Consider looking into the Caching example on how to handle slow IO.
+func SlowIO(args int) chan Node {
+	// Create a channel that's responsible for emitting Nodes. Each emit is simulated to take 100 milliseconds
 	ch := make(chan Node)
 	go func() {
-		for i := 0; i < 10; i++ {
+		for i := 0; i < args; i++ {
 			ch <- Tr(
 				Td(
 					Textf("value: %d", i),
@@ -24,12 +23,6 @@ func SimulateSlowIO() chan Node {
 		close(ch)
 	}()
 	return ch
-}
-
-func SimulateSlowIO2() func() chan Node {
-	return func() chan Node {
-		return SimulateSlowIO()
-	}
 }
 
 func index(w http.ResponseWriter, r *http.Request) {
@@ -45,7 +38,11 @@ func index(w http.ResponseWriter, r *http.Request) {
 				Text("Table using emit"),
 			),
 			Table(
-				EmitChannel(SimulateSlowIO2()),
+				// Emitting SlowIO(10) takes 1 second. Consider looking into the Caching example on
+				// how to handle this type of slow IO
+				EmitChannel(func() chan Node {
+					return SlowIO(10)
+				}),
 			),
 		),
 	)(w)
