@@ -3,8 +3,8 @@ package main
 import (
 	"bytes"
 	"fmt"
-	. "github.com/westcoastcode-se/gohtml"
 	"github.com/westcoastcode-se/gohtml/a"
+	. "github.com/westcoastcode-se/gohtml/h"
 )
 
 func main() {

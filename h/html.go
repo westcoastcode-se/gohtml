@@ -1,4 +1,4 @@
-package gohtml
+package h
 
 import (
 	"fmt"
@@ -7,6 +7,7 @@ import (
 )
 
 type RootNode func(w io.Writer) (int, error)
+
 type Node func(b byte, w io.Writer) byte
 
 // NodeIf gives you a way of creating a Node only if the supplied test is true

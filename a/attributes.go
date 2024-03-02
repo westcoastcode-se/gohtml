@@ -1,77 +1,81 @@
 package a
 
 import (
-	"github.com/westcoastcode-se/gohtml"
+	"github.com/westcoastcode-se/gohtml/h"
 )
 
-func ID(id string) gohtml.Node {
-	return gohtml.Attrib("id", id)
+func ID(id string) h.Node {
+	return h.Attrib("id", id)
 }
 
-func Class(classes string) gohtml.Node {
-	return gohtml.Attrib("class", classes)
+func Class(classes string) h.Node {
+	return h.Attrib("class", classes)
 }
 
-func ClassIf(classes string, optional bool) gohtml.Node {
-	return gohtml.AttribIf(optional, func() gohtml.Node {
+func ClassIf(classes string, optional bool) h.Node {
+	return h.AttribIf(optional, func() h.Node {
 		return Class(classes)
 	})
 }
 
-// ClassesIf emits a class attribute with zero or many values. Each value is expected to be emitted from a gohtml.Value functions
-func ClassesIf(values ...gohtml.Node) gohtml.Node {
-	return gohtml.Attribs("class", values...)
+// ClassesIf emits a class attribute with zero or many values. Each value is expected to be emitted from a h.Raw functions
+func ClassesIf(values ...h.Node) h.Node {
+	return h.Attribs("class", values...)
 }
 
-func Href(h string) gohtml.Node {
-	return gohtml.Attrib("href", h)
+func Href(val string) h.Node {
+	return h.Attrib("href", val)
 }
 
-func Src(src string) gohtml.Node {
-	return gohtml.Attrib("src", src)
+func Src(src string) h.Node {
+	return h.Attrib("src", src)
 }
 
-func Role(classes string) gohtml.Node {
-	return gohtml.Attrib("role", classes)
+func Role(classes string) h.Node {
+	return h.Attrib("role", classes)
 }
 
-func Integrity(val string) gohtml.Node {
-	return gohtml.Attrib("integrity", val)
+func Integrity(val string) h.Node {
+	return h.Attrib("integrity", val)
 }
 
 const RelStylesheet = "stylesheet"
 const RelIcon = "icon"
 
-func Rel(rel string) gohtml.Node {
-	return gohtml.Attrib("rel", rel)
+func Rel(rel string) h.Node {
+	return h.Attrib("rel", rel)
 }
 
 const CrossOriginAnonymous = "anonymous"
 
-func CrossOrigin(val string) gohtml.Node {
-	return gohtml.Attrib("crossorigin", val)
+func CrossOrigin(val string) h.Node {
+	return h.Attrib("crossorigin", val)
 }
 
-func Charset(val string) gohtml.Node {
-	return gohtml.Attrib("charset", val)
+func Charset(val string) h.Node {
+	return h.Attrib("charset", val)
 }
 
-func Name(val string) gohtml.Node {
-	return gohtml.Attrib("name", val)
+func Name(val string) h.Node {
+	return h.Attrib("name", val)
 }
 
-func Content(val string) gohtml.Node {
-	return gohtml.Attrib("content", val)
+func Content(val string) h.Node {
+	return h.Attrib("content", val)
 }
 
-func Scope(val string) gohtml.Node {
-	return gohtml.Attrib("scope", val)
+func Scope(val string) h.Node {
+	return h.Attrib("scope", val)
 }
 
-func Style(val string) gohtml.Node {
-	return gohtml.Attrib("style", val)
+func Style(val string) h.Node {
+	return h.Attrib("style", val)
 }
 
-func Lang(val string) gohtml.Node {
-	return gohtml.Attrib("lang", val)
+func Lang(val string) h.Node {
+	return h.Attrib("lang", val)
+}
+
+func Type(t string) h.Node {
+	return h.Attrib("type", t)
 }

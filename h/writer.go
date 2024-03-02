@@ -1,4 +1,4 @@
-package gohtml
+package h
 
 import "io"
 
