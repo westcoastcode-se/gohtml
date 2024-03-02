@@ -2,6 +2,7 @@ package a
 
 import (
 	"github.com/westcoastcode-se/gohtml/h"
+	"strconv"
 )
 
 func ID(id string) h.Node {
@@ -82,4 +83,28 @@ func Type(t string) h.Node {
 
 func OnClick(val string) h.Node {
 	return h.Attrib("onclick", val)
+}
+
+func Method(val string) h.Node {
+	return h.Attrib("method", val)
+}
+
+func Action(val string) h.Node {
+	return h.Attrib("action", val)
+}
+
+func For(val string) h.Node {
+	return h.Attrib("for", val)
+}
+
+func Colspan(n int) h.Node {
+	return h.Attrib("colspan", strconv.Itoa(n))
+}
+
+func Rowspan(n int) h.Node {
+	return h.Attrib("rowspan", strconv.Itoa(n))
+}
+
+func Value(v string) h.Node {
+	return h.Attrib("value", v)
 }

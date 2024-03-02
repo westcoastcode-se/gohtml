@@ -1,6 +1,6 @@
 # gohtml
 
-A low-latency HTML components renderer using Go functions
+A functional low-latency HTML components renderer
 
 This is, somewhat, under development. Mostly for my amusement at the moment
 
@@ -15,9 +15,16 @@ This is, somewhat, under development. Mostly for my amusement at the moment
 * [CDN](examples/cdn/main.go) - Another caching example that simulates a more accurate real-world scenario. This
   use-case downloads javascript and css files from a CDN and injects it directly in the HTML. We are, then, caching the
   javascript- and css content
+* [Extension](examples/extension/main.go) - If you want to create complex html structures, then it sometimes makes sense
+  to create structs that defines how html elements are connected together. This example shows how we can use structures
+  in order to build a form with multiple input fields in a more controlled manner
 
-## Limitations
+## What isn't this framework?
 
-### Attributes first
+This framework is a functional library with very generic functions. It allows for combining nodes with other nodes. But
+since the framework isn't creating any structures then it can't really know if the same attribute is added twice. It
+also can't know if you are mixing node- and attribute nodes. This is because there are no way for Golang to know if a
+function is an attribute builder or a node builder. This is why attributes must be added first, and then child nodes
 
-The design of the framework forces the develop
+The intended purpose of this is, however, to be built upon to create [extensions](examples/extension/main.go). Those can
+be used to enforce types in a structured manner.

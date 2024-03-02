@@ -7,4 +7,5 @@ use (
 	examples/channels
 	examples/caching
 	examples/cdn
+	examples/extension
 )

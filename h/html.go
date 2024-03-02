@@ -184,6 +184,14 @@ func Div(c ...Node) Node {
 	return Elem("div", c...)
 }
 
+func Label(c ...Node) Node {
+	return Elem("label", c...)
+}
+
+func Input(c ...Node) Node {
+	return ElemEmpty("input", c...)
+}
+
 func Br(c ...Node) Node {
 	return ElemEmpty("br", c...)
 }
@@ -352,4 +360,8 @@ func I(c ...Node) Node {
 
 func Strong(c ...Node) Node {
 	return Elem("strong", c...)
+}
+
+func Form(c ...Node) Node {
+	return Elem("form", c...)
 }
