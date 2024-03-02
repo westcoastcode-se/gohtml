@@ -1,3 +1,5 @@
+# gohtml
+
 A low-latency HTML components renderer using Go functions
 
 This is, somewhat, under development. Mostly for my amusement at the moment
@@ -10,3 +12,12 @@ This is, somewhat, under development. Mostly for my amusement at the moment
   emit HTML nodes from a channel
 * [Caching](examples/caching/main.go) - Emitting HTML nodes from external systems is sometimes slow. Caching such nodes
   might be needed
+* [CDN](examples/cdn/main.go) - Another caching example that simulates a more accurate real-world scenario. This
+  use-case downloads javascript and css files from a CDN and injects it directly in the HTML. We are, then, caching the
+  javascript- and css content
+
+## Limitations
+
+### Attributes first
+
+The design of the framework forces the develop

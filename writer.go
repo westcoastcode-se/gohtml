@@ -2,13 +2,15 @@ package gohtml
 
 import "io"
 
-type ErrorAwareWriter struct {
+// errorAwareWriter gives us a way of keeping track of all memory being written to the writer and
+// a simple way of centralizing the handling of any error that might occur while writing the HTML content
+type errorAwareWriter struct {
 	w   io.Writer
 	len int
 	err error
 }
 
-func (e *ErrorAwareWriter) Write(b []byte) (int, error) {
+func (e *errorAwareWriter) Write(b []byte) (int, error) {
 	if e.err != nil {
 		return 0, e.err
 	}

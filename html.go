@@ -40,14 +40,15 @@ func Attribs(key string, values ...Node) Node {
 	}
 }
 
-func Value(value string) Node {
+// Raw simply writes the byte content directly to the io.Writer and does nothing else
+func Raw(value string) Node {
 	return func(b byte, w io.Writer) byte {
 		_, _ = w.Write([]byte(value))
 		return b
 	}
 }
 
-func ValueIf(value string, test bool) Node {
+func RawIf(value string, test bool) Node {
 	return func(b byte, w io.Writer) byte {
 		if test {
 			_, _ = w.Write([]byte(value))
@@ -83,6 +84,7 @@ func ElemEmpty(name string, c ...Node) Node {
 	}
 }
 
+// Elem writes a single HTML tag that might have 0 or more child-nodes
 func Elem(name string, c ...Node) Node {
 	return func(b byte, w io.Writer) byte {
 		if b != 0 {
@@ -106,7 +108,7 @@ func Elem(name string, c ...Node) Node {
 
 func Html(c ...Node) RootNode {
 	return func(w io.Writer) (int, error) {
-		we := &ErrorAwareWriter{
+		we := &errorAwareWriter{
 			w: w,
 		}
 		if _, err := we.Write([]byte("<!doctype html><html")); err != nil {
@@ -246,6 +248,7 @@ func P(c ...Node) Node {
 	return Elem("p", c...)
 }
 
+// Bytes writes the supplied bytes as if it's a single text-block
 func Bytes(value []byte) Node {
 	return func(b byte, w io.Writer) byte {
 		if b != 0 {

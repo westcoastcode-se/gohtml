@@ -101,7 +101,7 @@ func Cache(cacheStorage CacheStorage, key any, evictDuration time.Duration, c ..
 
 	return func(b byte, w io.Writer) byte {
 		bb := bytes.Buffer{}
-		ww := ErrorAwareWriter{w: &bb}
+		ww := errorAwareWriter{w: &bb}
 		for _, cc := range c {
 			b = cc(b, &ww)
 		}
