@@ -79,3 +79,7 @@ func Lang(val string) h.Node {
 func Type(t string) h.Node {
 	return h.Attrib("type", t)
 }
+
+func OnClick(val string) h.Node {
+	return h.Attrib("onclick", val)
+}

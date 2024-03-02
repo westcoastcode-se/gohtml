@@ -148,6 +148,13 @@ func Expand(c ...Node) Node {
 	}
 }
 
+// Empty is a way to represent nothing. This is useful when
+func Empty() Node {
+	return func(b byte, w io.Writer) byte {
+		return b
+	}
+}
+
 func ExpandArray(c []Node) Node {
 	return func(b byte, w io.Writer) byte {
 		for _, cc := range c {
@@ -195,6 +202,10 @@ func H3(c ...Node) Node {
 
 func H4(c ...Node) Node {
 	return Elem("h4", c...)
+}
+
+func H5(c ...Node) Node {
+	return Elem("h5", c...)
 }
 
 func Table(c ...Node) Node {
@@ -247,6 +258,10 @@ func A(c ...Node) Node {
 
 func P(c ...Node) Node {
 	return Elem("p", c...)
+}
+
+func Hr(c ...Node) Node {
+	return Elem("hr", c...)
 }
 
 // Bytes writes the supplied bytes as if it's a single text-block
@@ -329,4 +344,12 @@ func Logf(format string, a ...interface{}) Node {
 
 func Span(c ...Node) Node {
 	return Elem("span", c...)
+}
+
+func I(c ...Node) Node {
+	return Elem("i", c...)
+}
+
+func Strong(c ...Node) Node {
+	return Elem("strong", c...)
 }
