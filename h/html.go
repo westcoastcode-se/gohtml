@@ -192,6 +192,11 @@ func Input(c ...Node) Node {
 	return ElemEmpty("input", c...)
 }
 
+func Select(c ...Node) Node {
+	return Elem("select", c...)
+
+}
+
 func Br(c ...Node) Node {
 	return ElemEmpty("br", c...)
 }
@@ -269,7 +274,7 @@ func P(c ...Node) Node {
 }
 
 func Hr(c ...Node) Node {
-	return Elem("hr", c...)
+	return ElemEmpty("hr", c...)
 }
 
 // Bytes writes the supplied bytes as if it's a single text-block

@@ -50,7 +50,7 @@ func (f Form) Build() h.Node {
 		a.Method(f.Method),
 		a.Action(f.URL),
 		h.Table(
-			h.EmitArray(f.Fields, func(i Input) h.Node {
+			h.EmitArray(f.Fields[:], func(i Input) h.Node {
 				return h.Tr(
 					h.Td(
 						i.Label(),

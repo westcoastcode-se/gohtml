@@ -73,3 +73,13 @@ func EmitMap[K comparable, V any](arr map[K]V, emit func(key K, value V) Node) N
 		return b
 	}
 }
+
+// Convert coverts a variadic number of nodes from one type to another
+func Convert[T any](emit func(v T) Node, t ...T) Node {
+	return func(b byte, w io.Writer) byte {
+		for _, tt := range t {
+			b = emit(tt)(b, w)
+		}
+		return b
+	}
+}
