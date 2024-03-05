@@ -26,9 +26,7 @@ func Class(classes string) h.Node {
 }
 
 func ClassIf(classes string, optional bool) h.Node {
-	return h.AttribIf(optional, func() h.Node {
-		return Class(classes)
-	})
+	return h.NodeIf(optional, Class(classes))
 }
 
 // ClassesIf emits a class attribute with zero or many values. Each value is expected to be emitted from a h.Raw functions
