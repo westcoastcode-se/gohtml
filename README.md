@@ -1,7 +1,7 @@
 # gohtml
 
 A functional low-latency HTML components renderer. All HTML tags are prefixed with `h` and all attributes are prefixed
-with `a`. If a HTML tag is missing, then you can use the generic `h. 
+with `a`.
 
 ## What isn't this framework?
 
