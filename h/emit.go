@@ -65,6 +65,16 @@ func EmitChannelEx(f func() chan Node, props ChannelProps) Node {
 	}
 }
 
+// EmitIf emit a node if the test results in true
+func EmitIf(test bool, f func() Node) Node {
+	return func(b byte, w io.Writer) byte {
+		if !test {
+			return b
+		}
+		return f()(b, w)
+	}
+}
+
 // EmitArray emits an array of items and converts them into nodes to be written
 func EmitArray[T any](arr []T, emit func(t T) Node) Node {
 	return func(b byte, w io.Writer) byte {

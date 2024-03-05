@@ -10,20 +10,14 @@ type RootNode func(w io.Writer) (int, error)
 
 type Node func(b byte, w io.Writer) byte
 
-// NodeIf gives you a way of creating a Node only if the supplied test is true
-func NodeIf(test bool, f func() Node) Node {
+// NodeIf evaluates the node if the supplied test is true
+func NodeIf(test bool, n Node) Node {
 	return func(b byte, w io.Writer) byte {
 		if !test {
 			return b
 		}
-		return f()(b, w)
+		return n(b, w)
 	}
-}
-
-// AttribIf gives you a way of creating a Node only if the supplied test is true. This function
-// is identical  as NodeIf
-func AttribIf(test bool, f func() Node) Node {
-	return NodeIf(test, f)
 }
 
 // Attribs gives you a way of creating an attribute with multiple values using the Value, ValueIf functions
