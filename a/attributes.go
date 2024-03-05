@@ -2,15 +2,27 @@ package a
 
 import (
 	"github.com/westcoastcode-se/gohtml/h"
+	"io"
 	"strconv"
 )
 
+func Attrib(key string, value string) h.Node {
+	return func(b byte, w io.Writer) byte {
+		_, _ = w.Write([]byte{' '})
+		_, _ = w.Write([]byte(key))
+		_, _ = w.Write([]byte("=\""))
+		_, _ = w.Write([]byte(value))
+		_, _ = w.Write([]byte{'"'})
+		return b
+	}
+}
+
 func ID(id string) h.Node {
-	return h.Attrib("id", id)
+	return Attrib("id", id)
 }
 
 func Class(classes string) h.Node {
-	return h.Attrib("class", classes)
+	return Attrib("class", classes)
 }
 
 func ClassIf(classes string, optional bool) h.Node {
@@ -25,86 +37,86 @@ func ClassesIf(values ...h.Node) h.Node {
 }
 
 func Href(val string) h.Node {
-	return h.Attrib("href", val)
+	return Attrib("href", val)
 }
 
 func Src(src string) h.Node {
-	return h.Attrib("src", src)
+	return Attrib("src", src)
 }
 
 func Role(classes string) h.Node {
-	return h.Attrib("role", classes)
+	return Attrib("role", classes)
 }
 
 func Integrity(val string) h.Node {
-	return h.Attrib("integrity", val)
+	return Attrib("integrity", val)
 }
 
 const RelStylesheet = "stylesheet"
 const RelIcon = "icon"
 
 func Rel(rel string) h.Node {
-	return h.Attrib("rel", rel)
+	return Attrib("rel", rel)
 }
 
 const CrossOriginAnonymous = "anonymous"
 
 func CrossOrigin(val string) h.Node {
-	return h.Attrib("crossorigin", val)
+	return Attrib("crossorigin", val)
 }
 
 func Charset(val string) h.Node {
-	return h.Attrib("charset", val)
+	return Attrib("charset", val)
 }
 
 func Name(val string) h.Node {
-	return h.Attrib("name", val)
+	return Attrib("name", val)
 }
 
 func Content(val string) h.Node {
-	return h.Attrib("content", val)
+	return Attrib("content", val)
 }
 
 func Scope(val string) h.Node {
-	return h.Attrib("scope", val)
+	return Attrib("scope", val)
 }
 
 func Style(val string) h.Node {
-	return h.Attrib("style", val)
+	return Attrib("style", val)
 }
 
 func Lang(val string) h.Node {
-	return h.Attrib("lang", val)
+	return Attrib("lang", val)
 }
 
 func Type(t string) h.Node {
-	return h.Attrib("type", t)
+	return Attrib("type", t)
 }
 
 func OnClick(val string) h.Node {
-	return h.Attrib("onclick", val)
+	return Attrib("onclick", val)
 }
 
 func Method(val string) h.Node {
-	return h.Attrib("method", val)
+	return Attrib("method", val)
 }
 
 func Action(val string) h.Node {
-	return h.Attrib("action", val)
+	return Attrib("action", val)
 }
 
 func For(val string) h.Node {
-	return h.Attrib("for", val)
+	return Attrib("for", val)
 }
 
 func Colspan(n int) h.Node {
-	return h.Attrib("colspan", strconv.Itoa(n))
+	return Attrib("colspan", strconv.Itoa(n))
 }
 
 func Rowspan(n int) h.Node {
-	return h.Attrib("rowspan", strconv.Itoa(n))
+	return Attrib("rowspan", strconv.Itoa(n))
 }
 
 func Value(v string) h.Node {
-	return h.Attrib("value", v)
+	return Attrib("value", v)
 }

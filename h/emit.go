@@ -7,7 +7,18 @@ import (
 
 // EmitChannel calls a function be called in which a channel of nodes is consumed until the channel is closed.
 // The reason for why it takes a function returning a channel instead of just taking the channel is so that
-// we can "not" create a channel if, for example, the result is cached
+// we can "not" create a channel if, for example, the result is cached.
+//
+// Example:
+//
+//	 EmitChannel(func () chan Node {
+//	   ch := make(chan Node)
+//		  go func() {
+//	     writeNodes(ch)
+//	     close(ch)
+//	   }()
+//	   return ch
+//	})
 func EmitChannel(f func() chan Node) Node {
 	return func(b byte, w io.Writer) byte {
 		ch := f()

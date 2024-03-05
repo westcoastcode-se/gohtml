@@ -58,18 +58,8 @@ func RawIf(value string, test bool) Node {
 	}
 }
 
-func Attrib(key string, value string) Node {
-	return func(b byte, w io.Writer) byte {
-		_, _ = w.Write([]byte{' '})
-		_, _ = w.Write([]byte(key))
-		_, _ = w.Write([]byte("=\""))
-		_, _ = w.Write([]byte(value))
-		_, _ = w.Write([]byte{'"'})
-		return b
-	}
-}
-
-func ElemEmpty(name string, c ...Node) Node {
+// TagEmpty writes a single HTML tag that have 0 or more attributes
+func TagEmpty(name string, c ...Node) Node {
 	return func(b byte, w io.Writer) byte {
 		if b != 0 {
 			_, _ = w.Write([]byte{b})
@@ -85,8 +75,8 @@ func ElemEmpty(name string, c ...Node) Node {
 	}
 }
 
-// Elem writes a single HTML tag that might have 0 or more child-nodes
-func Elem(name string, c ...Node) Node {
+// Tag writes a single HTML tag that have 0 or more attributes and 0 or more child-nodes
+func Tag(name string, c ...Node) Node {
 	return func(b byte, w io.Writer) byte {
 		if b != 0 {
 			_, _ = w.Write([]byte{b})
@@ -107,7 +97,8 @@ func Elem(name string, c ...Node) Node {
 	}
 }
 
-func Expand(c ...Node) Node {
+// Join nodes multiple nodes into a single Node
+func Join(c ...Node) Node {
 	return func(b byte, w io.Writer) byte {
 		for _, cc := range c {
 			b = cc(b, w)
@@ -116,7 +107,7 @@ func Expand(c ...Node) Node {
 	}
 }
 
-// Empty is a way to represent nothing. This is useful when
+// Empty is a way to represent nothing
 func Empty() Node {
 	return func(b byte, w io.Writer) byte {
 		return b
@@ -226,195 +217,195 @@ func Comment(c ...Node) Node {
 }
 
 func A(c ...Node) Node {
-	return Elem("a", c...)
+	return Tag("a", c...)
 }
 
 func Abbr(c ...Node) Node {
-	return Elem("abbr", c...)
+	return Tag("abbr", c...)
 }
 
 func Address(c ...Node) Node {
-	return Elem("address", c...)
+	return Tag("address", c...)
 }
 
 func Area(c ...Node) Node {
-	return ElemEmpty("area", c...)
+	return TagEmpty("area", c...)
 }
 
 func Article(c ...Node) Node {
-	return Elem("article", c...)
+	return Tag("article", c...)
 }
 
 func Aside(c ...Node) Node {
-	return Elem("aside", c...)
+	return Tag("aside", c...)
 }
 
 func Audio(c ...Node) Node {
-	return Elem("audio", c...)
+	return Tag("audio", c...)
 }
 
 func B(c ...Node) Node {
-	return Elem("b", c...)
+	return Tag("b", c...)
 }
 
 func Base(c ...Node) Node {
-	return ElemEmpty("base", c...)
+	return TagEmpty("base", c...)
 }
 
 func Bdi(c ...Node) Node {
-	return Elem("bdi", c...)
+	return Tag("bdi", c...)
 }
 
 func Bdo(c ...Node) Node {
-	return Elem("bdo", c...)
+	return Tag("bdo", c...)
 }
 
 func Blockquote(c ...Node) Node {
-	return Elem("blockquote", c...)
+	return Tag("blockquote", c...)
 }
 
 func Body(c ...Node) Node {
-	return Elem("body", c...)
+	return Tag("body", c...)
 }
 
 func Br(c ...Node) Node {
-	return ElemEmpty("br", c...)
+	return TagEmpty("br", c...)
 }
 
 func Button(c ...Node) Node {
-	return Elem("button", c...)
+	return Tag("button", c...)
 }
 
 func Canvas(c ...Node) Node {
-	return Elem("canvas", c...)
+	return Tag("canvas", c...)
 }
 
 func Caption(c ...Node) Node {
-	return Elem("caption", c...)
+	return Tag("caption", c...)
 }
 
 func Cite(c ...Node) Node {
-	return Elem("cite", c...)
+	return Tag("cite", c...)
 }
 
 func Code(c ...Node) Node {
-	return Elem("code", c...)
+	return Tag("code", c...)
 }
 
 func Col(c ...Node) Node {
-	return Elem("col", c...)
+	return Tag("col", c...)
 }
 
 func Colgroup(c ...Node) Node {
-	return Elem("colgroup", c...)
+	return Tag("colgroup", c...)
 }
 
 func Data(c ...Node) Node {
-	return Elem("data", c...)
+	return Tag("data", c...)
 }
 
 func Datalist(c ...Node) Node {
-	return Elem("datalist", c...)
+	return Tag("datalist", c...)
 }
 
 func Dd(c ...Node) Node {
-	return Elem("dd", c...)
+	return Tag("dd", c...)
 }
 
 func Del(c ...Node) Node {
-	return Elem("del", c...)
+	return Tag("del", c...)
 }
 
 func Details(c ...Node) Node {
-	return Elem("details", c...)
+	return Tag("details", c...)
 }
 
 func Dfn(c ...Node) Node {
-	return Elem("dfn", c...)
+	return Tag("dfn", c...)
 }
 
 func Dialog(c ...Node) Node {
-	return Elem("dialog", c...)
+	return Tag("dialog", c...)
 }
 
 func Div(c ...Node) Node {
-	return Elem("div", c...)
+	return Tag("div", c...)
 }
 
 func Dl(c ...Node) Node {
-	return Elem("dl", c...)
+	return Tag("dl", c...)
 }
 
 func Dt(c ...Node) Node {
-	return Elem("dt", c...)
+	return Tag("dt", c...)
 }
 
 func Em(c ...Node) Node {
-	return Elem("em", c...)
+	return Tag("em", c...)
 }
 
 func Embed(c ...Node) Node {
-	return ElemEmpty("embed", c...)
+	return TagEmpty("embed", c...)
 }
 
 func Fieldset(c ...Node) Node {
-	return Elem("fieldset", c...)
+	return Tag("fieldset", c...)
 }
 
 func Figcaption(c ...Node) Node {
-	return Elem("figcaption", c...)
+	return Tag("figcaption", c...)
 }
 
 func Figure(c ...Node) Node {
-	return Elem("figure", c...)
+	return Tag("figure", c...)
 }
 
 func Footer(c ...Node) Node {
-	return Elem("footer", c...)
+	return Tag("footer", c...)
 }
 
 func Form(c ...Node) Node {
-	return Elem("form", c...)
+	return Tag("form", c...)
 }
 
 func H1(c ...Node) Node {
-	return Elem("h1", c...)
+	return Tag("h1", c...)
 }
 
 func H2(c ...Node) Node {
-	return Elem("h2", c...)
+	return Tag("h2", c...)
 }
 
 func H3(c ...Node) Node {
-	return Elem("h3", c...)
+	return Tag("h3", c...)
 }
 
 func H4(c ...Node) Node {
-	return Elem("h4", c...)
+	return Tag("h4", c...)
 }
 
 func H5(c ...Node) Node {
-	return Elem("h5", c...)
+	return Tag("h5", c...)
 }
 
 func H6(c ...Node) Node {
-	return Elem("h6", c...)
+	return Tag("h6", c...)
 }
 
 func Head(c ...Node) Node {
-	return Elem("head", c...)
+	return Tag("head", c...)
 }
 
 func Header(c ...Node) Node {
-	return Elem("header", c...)
+	return Tag("header", c...)
 }
 
 func Hgroup(c ...Node) Node {
-	return Elem("hgroup", c...)
+	return Tag("hgroup", c...)
 }
 
 func Hr(c ...Node) Node {
-	return ElemEmpty("hr", c...)
+	return TagEmpty("hr", c...)
 }
 
 func Html(c ...Node) RootNode {
@@ -438,257 +429,257 @@ func Html(c ...Node) RootNode {
 }
 
 func I(c ...Node) Node {
-	return Elem("i", c...)
+	return Tag("i", c...)
 }
 
 func Iframe(c ...Node) Node {
-	return ElemEmpty("iframe", c...)
+	return TagEmpty("iframe", c...)
 }
 
 func Img(c ...Node) Node {
-	return ElemEmpty("img", c...)
+	return TagEmpty("img", c...)
 }
 
 func Input(c ...Node) Node {
-	return ElemEmpty("input", c...)
+	return TagEmpty("input", c...)
 }
 
 func Ins(c ...Node) Node {
-	return Elem("ins", c...)
+	return Tag("ins", c...)
 }
 
 func Kbd(c ...Node) Node {
-	return Elem("kbd", c...)
+	return Tag("kbd", c...)
 }
 
 func Label(c ...Node) Node {
-	return Elem("label", c...)
+	return Tag("label", c...)
 }
 
 func Legend(c ...Node) Node {
-	return Elem("legend", c...)
+	return Tag("legend", c...)
 }
 
 func Li(c ...Node) Node {
-	return Elem("li", c...)
+	return Tag("li", c...)
 }
 
 func Link(c ...Node) Node {
-	return ElemEmpty("link", c...)
+	return TagEmpty("link", c...)
 }
 
 func Main(c ...Node) Node {
-	return Elem("main", c...)
+	return Tag("main", c...)
 }
 
 func Map(c ...Node) Node {
-	return Elem("map", c...)
+	return Tag("map", c...)
 }
 
 func Mark(c ...Node) Node {
-	return Elem("mark", c...)
+	return Tag("mark", c...)
 }
 
 func Menu(c ...Node) Node {
-	return Elem("menu", c...)
+	return Tag("menu", c...)
 }
 
 func Meta(c ...Node) Node {
-	return ElemEmpty("meta", c...)
+	return TagEmpty("meta", c...)
 }
 
 func Meter(c ...Node) Node {
-	return Elem("meter", c...)
+	return Tag("meter", c...)
 }
 
 func Nav(c ...Node) Node {
-	return Elem("nav", c...)
+	return Tag("nav", c...)
 }
 
 func Noscript(c ...Node) Node {
-	return Elem("noscript", c...)
+	return Tag("noscript", c...)
 }
 
 func Object(c ...Node) Node {
-	return Elem("object", c...)
+	return Tag("object", c...)
 }
 
 func Ol(c ...Node) Node {
-	return Elem("ol", c...)
+	return Tag("ol", c...)
 }
 
 func Optgroup(c ...Node) Node {
-	return Elem("optgroup", c...)
+	return Tag("optgroup", c...)
 }
 
 func Option(c ...Node) Node {
-	return Elem("option", c...)
+	return Tag("option", c...)
 }
 
 func Output(c ...Node) Node {
-	return Elem("output", c...)
+	return Tag("output", c...)
 }
 
 func P(c ...Node) Node {
-	return Elem("p", c...)
+	return Tag("p", c...)
 }
 
 func Param(c ...Node) Node {
-	return ElemEmpty("param", c...)
+	return TagEmpty("param", c...)
 }
 
 func Picture(c ...Node) Node {
-	return Elem("picture", c...)
+	return Tag("picture", c...)
 }
 
 func Pre(c ...Node) Node {
-	return Elem("pre", c...)
+	return Tag("pre", c...)
 }
 
 func Progress(c ...Node) Node {
-	return Elem("progress", c...)
+	return Tag("progress", c...)
 }
 
 func Q(c ...Node) Node {
-	return Elem("q", c...)
+	return Tag("q", c...)
 }
 
 func Rp(c ...Node) Node {
-	return Elem("rp", c...)
+	return Tag("rp", c...)
 }
 
 func Rt(c ...Node) Node {
-	return Elem("rt", c...)
+	return Tag("rt", c...)
 }
 
 func Ruby(c ...Node) Node {
-	return Elem("ruby", c...)
+	return Tag("ruby", c...)
 }
 
 func S(c ...Node) Node {
-	return Elem("s", c...)
+	return Tag("s", c...)
 }
 
 func Samp(c ...Node) Node {
-	return Elem("samp", c...)
+	return Tag("samp", c...)
 }
 
 func Script(c ...Node) Node {
-	return Elem("script", c...)
+	return Tag("script", c...)
 }
 
 func Search(c ...Node) Node {
-	return Elem("search", c...)
+	return Tag("search", c...)
 }
 
 func Section(c ...Node) Node {
-	return Elem("section", c...)
+	return Tag("section", c...)
 }
 
 func Select(c ...Node) Node {
-	return Elem("select", c...)
+	return Tag("select", c...)
 }
 
 func Small(c ...Node) Node {
-	return Elem("small", c...)
+	return Tag("small", c...)
 }
 
 func Source(c ...Node) Node {
-	return ElemEmpty("source", c...)
+	return TagEmpty("source", c...)
 }
 
 func Span(c ...Node) Node {
-	return Elem("span", c...)
+	return Tag("span", c...)
 }
 
 func Strong(c ...Node) Node {
-	return Elem("strong", c...)
+	return Tag("strong", c...)
 }
 
 func Style(c ...Node) Node {
-	return Elem("style", c...)
+	return Tag("style", c...)
 }
 
 func Sub(c ...Node) Node {
-	return Elem("sub", c...)
+	return Tag("sub", c...)
 }
 
 func Summary(c ...Node) Node {
-	return Elem("summary", c...)
+	return Tag("summary", c...)
 }
 
 func Sup(c ...Node) Node {
-	return Elem("sup", c...)
+	return Tag("sup", c...)
 }
 
 func Svg(c ...Node) Node {
-	return Elem("svg", c...)
+	return Tag("svg", c...)
 }
 
 func Table(c ...Node) Node {
-	return Elem("table", c...)
+	return Tag("table", c...)
 }
 
 func Tbody(c ...Node) Node {
-	return Elem("tbody", c...)
+	return Tag("tbody", c...)
 }
 
 func Td(c ...Node) Node {
-	return Elem("td", c...)
+	return Tag("td", c...)
 }
 
 func Template(c ...Node) Node {
-	return Elem("template", c...)
+	return Tag("template", c...)
 }
 
 func Textarea(c ...Node) Node {
-	return Elem("textarea", c...)
+	return Tag("textarea", c...)
 }
 
 func Tfoot(c ...Node) Node {
-	return Elem("tfoot", c...)
+	return Tag("tfoot", c...)
 }
 
 func Th(c ...Node) Node {
-	return Elem("th", c...)
+	return Tag("th", c...)
 }
 
 func Thead(c ...Node) Node {
-	return Elem("thead", c...)
+	return Tag("thead", c...)
 }
 
 func Time(c ...Node) Node {
-	return Elem("time", c...)
+	return Tag("time", c...)
 }
 
 func Title(title string) Node {
-	return Elem("title", Text(title))
+	return Tag("title", Text(title))
 }
 
 func Tr(c ...Node) Node {
-	return Elem("tr", c...)
+	return Tag("tr", c...)
 }
 
 func Track(c ...Node) Node {
-	return ElemEmpty("track", c...)
+	return TagEmpty("track", c...)
 }
 
 func U(c ...Node) Node {
-	return Elem("u", c...)
+	return Tag("u", c...)
 }
 
 func Ul(c ...Node) Node {
-	return Elem("ul", c...)
+	return Tag("ul", c...)
 }
 
 func Var(c ...Node) Node {
-	return Elem("var", c...)
+	return Tag("var", c...)
 }
 
 func Video(c ...Node) Node {
-	return Elem("video", c...)
+	return Tag("video", c...)
 }
 
 func Wbr(c ...Node) Node {
-	return Elem("wbr", c...)
+	return Tag("wbr", c...)
 }
